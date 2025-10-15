@@ -1,0 +1,11 @@
+# Imagen base de Kafka (usamos la de Bitnami que es estable y liviana)
+FROM bitnami/kafka:3.6.1
+
+# Copiamos el script de inicialización de topics dentro del contenedor
+COPY topic-init.sh /docker-entrypoint-initdb.d/topic-init.sh
+
+# Damos permisos de ejecución
+RUN chmod +x /docker-entrypoint-initdb.d/topic-init.sh
+
+# Exponemos los puertos por defecto
+EXPOSE 9092 9093

@@ -126,6 +126,18 @@
 			<artifactId>transactions-jdbc</artifactId>
 			<version>5.0.8</version>
 		</dependency>
+		<!-- Dependencia principal de Spring para Kafka -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
+
+		<!-- Cliente oficial de Apache Kafka -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+		</dependency>
+
 
 		<!-- SOAP -->
 		<dependency>
