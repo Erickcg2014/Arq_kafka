@@ -1,8 +1,8 @@
-package com.taller7arqui.inventario.DTO;
+package com.taller7arqui.notificaciones.DTO;
 
-public class ProductoCompra {
+public class DetalleProductoDTO {
     private Long productoId;
-    private Long proveedorId;
+    private String nombreProducto;
     private Integer cantidad;
     private Double precioUnitario;
 
@@ -10,8 +10,8 @@ public class ProductoCompra {
     public Long getProductoId() { return productoId; }
     public void setProductoId(Long productoId) { this.productoId = productoId; }
 
-    public Long getProveedorId() { return proveedorId; }
-    public void setProveedorId(Long proveedorId) { this.proveedorId = proveedorId; }
+    public String getNombreProducto() { return nombreProducto; }
+    public void setNombreProducto(String nombreProducto) { this.nombreProducto = nombreProducto; }
 
     public Integer getCantidad() { return cantidad; }
     public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }

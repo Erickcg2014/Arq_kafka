@@ -29,13 +29,16 @@ services:
 
   # Servicio gRPC de Pagos
   pagos-service:
-      build:
-        context: ./pagos-service
-      container_name: pagos-service
-      ports:
-        - "9090:9090"
-      depends_on:
-        - db_pagos
+    build:
+      context: ./pagos-service
+    container_name: pagos-service
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db_pagos
+      - kafka
+    networks:
+      - app-network
 
   # Base de datos Inventario
   db_inventario:
@@ -50,6 +53,22 @@ services:
       - ./inventario:/docker-entrypoint-initdb.d  
     networks:
       - app-network
+
+  # Base de datos Proveedores
+  db_proveedores:
+    build: ./proveedores
+    container_name: postgres_proveedores
+    restart: unless-stopped
+    env_file: ./proveedores/.env
+    ports:
+      - "5436:5432"
+    volumes:
+      - proveedores_data:/var/lib/postgresql/data
+      - ./proveedores:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+  # Zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     environment:
@@ -57,7 +76,10 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
+    networks:
+      - app-network
 
+  # Kafka
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     depends_on:
@@ -72,7 +94,8 @@ services:
     volumes:
       - ./kafka/topic-init.sh:/usr/local/bin/topic-init.sh
     command: ["bash", "-c", "sleep 5 && /usr/local/bin/topic-init.sh && tail -f /dev/null"]
-
+    networks:
+      - app-network
 
   # Backend Spring Boot
   backend:
@@ -85,6 +108,8 @@ services:
       - db_facturacion
       - db_pagos
       - db_inventario
+      - db_proveedores
+      - kafka
     ports:
       - "8080:8080"
     networks:
@@ -93,6 +118,7 @@ services:
       DB_FACTURACION_URL: jdbc:postgresql://db_facturacion:5432/facturaciondb
       DB_PAGOS_URL: jdbc:postgresql://db_pagos:5432/pagosdb
       DB_INVENTARIO_URL: jdbc:postgresql://db_inventario:5432/inventariodb
+      DB_PROVEEDORES_URL: jdbc:postgresql://db_proveedores:5432/proveedoresdb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Mancity2004
       SPRING_PROFILES_ACTIVE: docker
@@ -117,6 +143,7 @@ volumes:
   facturacion_data:
   pagos_data:
   inventario_data:
+  proveedores_data:
 
 networks:
   app-network:

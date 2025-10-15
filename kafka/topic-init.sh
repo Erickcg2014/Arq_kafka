@@ -7,7 +7,14 @@ sleep 5
 echo "Creando topics de Kafka..."
 
 # Lista de topics que se crearán automáticamente
-TOPICS=("facturacion-events" "inventario-events" "notificaciones" "usuarios")
+TOPICS=(
+  "facturacion-events"
+  "inventario-events"
+  "notificacion-mail"
+  "proveedor-notifications"
+  "usuarios"
+  "sistema-logs"
+)
 
 for topic in "${TOPICS[@]}"
 do
@@ -15,7 +22,7 @@ do
     --if-not-exists \
     --bootstrap-server localhost:9092 \
     --replication-factor 1 \
-    --partitions 1 \
+    --partitions 3 \
     --topic "$topic"
 
   echo "Topic creado: $topic"

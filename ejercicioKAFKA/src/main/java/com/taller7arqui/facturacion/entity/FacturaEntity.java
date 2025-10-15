@@ -1,4 +1,5 @@
 package com.taller7arqui.facturacion.entity;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,13 +17,22 @@ public class FacturaEntity {
     @Column(name = "cliente", nullable = false)
     private String cliente;
 
-    @Column(name = "fecha")
+    @Column(name = "producto_id", nullable = false)
+    private Long productoId;
+
+    @Column(name = "proveedor_id", nullable = false)
+    private Long proveedorId;
+
+    @Column(name = "cantidad", nullable = false)
+    private Integer cantidad;
+
+    @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha = LocalDateTime.now();
 
     @Column(name = "total", nullable = false)
     private Double total;
 
-    @Column(name = "estado")
+    @Column(name = "estado", nullable = false)
     private String estado = "generada";
 
     // Getters y setters
@@ -35,6 +45,15 @@ public class FacturaEntity {
     public String getCliente() { return cliente; }
     public void setCliente(String cliente) { this.cliente = cliente; }
 
+    public Long getProductoId() { return productoId; }
+    public void setProductoId(Long productoId) { this.productoId = productoId; }
+
+    public Long getProveedorId() { return proveedorId; }
+    public void setProveedorId(Long proveedorId) { this.proveedorId = proveedorId; }
+
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+
     public LocalDateTime getFecha() { return fecha; }
     public void setFecha(LocalDateTime fecha) { this.fecha = fecha; }
 
@@ -43,12 +62,4 @@ public class FacturaEntity {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
-    public void setProductoId(Long productoId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setProductoId'");
-    }
-    public void setCantidad(int cantidad) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setCantidad'");
-    }
 }
