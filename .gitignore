@@ -3,6 +3,9 @@ target/
 *.class
 .mvn/
 
+# VSCODE 
+.vscode/
+
 # IntelliJ / Eclipse
 .idea/
 *.iml
