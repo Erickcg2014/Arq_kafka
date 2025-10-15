@@ -6,6 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import com.taller7arqui.proveedores.entity.ProveedorEntity; 
 
 @Entity
 @Table(name = "inventario")
@@ -19,62 +22,35 @@ public class Producto {
     private String tituloProductos;
 
     private String descripcion;
-
     private int cantidad;
-
     private String categoria;
-
     private double precio;
+
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id", nullable = false)
+    private ProveedorEntity proveedor;
 
     public Producto() {}
 
     // Getters y Setters
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getTituloProductos() { return tituloProductos; }
+    public void setTituloProductos(String tituloProductos) { this.tituloProductos = tituloProductos; }
 
-    public String getTituloProductos() {  
-        return tituloProductos;
-    }   
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public void setTituloProductos(String tituloProductos) {
-        this.tituloProductos = tituloProductos;
-    }
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
+    public String getCategoria() { return categoria; }
+    public void setCategoria(String categoria) { this.categoria = categoria; }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+    public Double getPrecio() { return precio; }
+    public void setPrecio(Double precio) { this.precio = precio; }
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public Double getPrecio() {
-    return precio;
-}
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
-
+    public ProveedorEntity getProveedor() { return proveedor; }
+    public void setProveedor(ProveedorEntity proveedor) { this.proveedor = proveedor; }
 }

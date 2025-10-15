@@ -2,6 +2,9 @@ package com.taller7arqui.proveedores.entity;
 
 import jakarta.persistence.*;
 
+@OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL)
+private List<Producto> productos;
+
 @Entity
 @Table(name = "proveedores")
 public class ProveedorEntity {
