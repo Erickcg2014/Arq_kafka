@@ -5,6 +5,7 @@ public class ProductoCompra {
     private Long proveedorId;
     private Integer cantidad;
     private Double precioUnitario;
+    private String nombreProducto;
 
     // Getters y setters
     public Long getProductoId() { return productoId; }
@@ -18,4 +19,7 @@ public class ProductoCompra {
 
     public Double getPrecioUnitario() { return precioUnitario; }
     public void setPrecioUnitario(Double precioUnitario) { this.precioUnitario = precioUnitario; }
+
+    public String getNombreProducto() { return nombreProducto; }
+    public void setNombreProducto(String nombreProducto) { this.nombreProducto = nombreProducto; }
 }

@@ -110,39 +110,47 @@ public class EmailConsumerMDB {
             """;
     }
     
-    private String getContenidoHTML(String cliente, String fechaActual, int cantidadProductos, String moneda, String totalFormato, String listaProductos) {
-        return """
-                    <div class="content">
-                        <div class="greeting">
-                            Hola <strong>"" + cliente + ""</strong>,
-                        </div>
-                        <p>Nos complace confirmar que tu compra ha sido procesada exitosamente. A continuación encontrarás los detalles de tu pedido.</p>
-                        <div class="section">
-                            <h3>Resumen de tu Pedido</h3>
-                            <div class="resumen-pago">
-                                <p><strong>Fecha:</strong> "" + fechaActual + ""</p>
-                                <p><strong>Cantidad de productos:</strong> "" + cantidadProductos + ""</p>
-                                <div class="total">
-                                    Total: """ + moneda + " " + totalFormato + """
-                                </div>
+    private String getContenidoHTML(
+    String cliente,
+    String fechaActual,
+    int cantidadProductos,
+    String moneda,
+    String totalFormato,
+    String listaProductos
+) {
+    return """
+                <div class="content">
+                    <div class="greeting">
+                        Hola <strong>%s</strong>,
+                    </div>
+                    <p>Nos complace confirmar que tu compra ha sido procesada exitosamente. A continuación encontrarás los detalles de tu pedido.</p>
+                    <div class="section">
+                        <h3>Resumen de tu Pedido</h3>
+                        <div class="resumen-pago">
+                            <p><strong>Fecha:</strong> %s</p>
+                            <p><strong>Cantidad de productos:</strong> %d</p>
+                            <div class="total">
+                                Total: %s %s
                             </div>
                         </div>
-                        <div class="section">
-                            <h3>Productos Comprados</h3>
-                            """ + listaProductos + """
-                        </div>
-                        <div class="info-adicional">
-                            <strong>Próximos pasos:</strong>
-                            Tu pedido será preparado y empacado en las próximas 24 horas. Recibirás un correo de confirmación de envío con el número de seguimiento.
-                        </div>
-                        <div class="section">
-                            <p style="font-size: 14px; color: #666;">
-                                Si tienes alguna pregunta sobre tu pedido, no dudes en contactarnos respondiendo este correo o visitando nuestra página de soporte.
-                            </p>
-                        </div>
                     </div>
-            """;
-    }
+                    <div class="section">
+                        <h3>Productos Comprados</h3>
+                        %s
+                    </div>
+                    <div class="info-adicional">
+                        <strong>Próximos pasos:</strong>
+                        Tu pedido será preparado y empacado en las próximas 24 horas. Recibirás un correo de confirmación de envío con el número de seguimiento.
+                    </div>
+                    <div class="section">
+                        <p style="font-size: 14px; color: #666;">
+                            Si tienes alguna pregunta sobre tu pedido, no dudes en contactarnos respondiendo este correo o visitando nuestra página de soporte.
+                        </p>
+                    </div>
+                </div>
+            """.formatted(cliente, fechaActual, cantidadProductos, moneda, totalFormato, listaProductos);
+}
+
     
     private String getCierreHTML() {
         return """
