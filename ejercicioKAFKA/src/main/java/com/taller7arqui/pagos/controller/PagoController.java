@@ -3,7 +3,6 @@ package com.taller7arqui.pagos.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import com.taller7arqui.pagos.service.PagoService;
 import com.taller7arqui.pagos.DTO.PagoRequest;
@@ -25,7 +24,6 @@ public class PagoController {
 
     // Procesar un pago completo (inventario + pago + facturación)
     @PostMapping
-    @Transactional
     public ResponseEntity<String> procesarPago(@RequestBody PagoRequest request) {
         try {
             pagoService.procesarPago(request);

@@ -84,7 +84,7 @@ services:
   # Kafka
   kafka:
     image: confluentinc/cp-kafka:7.5.0
-    container_name: taller7arqui-kafka-1
+    container_name: kafka
     ports:
       - "9092:9092"
     environment:

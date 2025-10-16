@@ -46,6 +46,7 @@ public class PagoService {
     public void procesarPago(PagoRequest request) {
 
         // 1️⃣ Validar y actualizar inventario
+        Map<Long, InventarioEntity> productosInventario = new HashMap<>();
         Map<Long, List<ProductoCompra>> productosPorProveedor = new HashMap<>();
 
         for (ProductoCompra producto : request.getProductos()) {
@@ -61,6 +62,9 @@ public class PagoService {
             inventario.setCantidad(inventario.getCantidad() - producto.getCantidad());
             inventarioRepository.save(inventario);
 
+            // Guardar para reutilizar después en las facturas
+            productosInventario.put(producto.getProductoId(), inventario);
+
             // Agrupar por proveedor
             Long proveedorId = inventario.getProveedorId(); // <-- asegúrate que esta columna existe en InventarioEntity
             productosPorProveedor
@@ -71,20 +75,29 @@ public class PagoService {
         // 2️⃣ Registrar pago general
         PagoEntity pago = new PagoEntity();
         pago.setCliente(request.getCliente());
-        pago.setMonto(request.getMonto());
+        pago.setEmail(request.getEmail()); // obligatorio
         pago.setMetodoPago(request.getMetodoPago());
+        pago.setMonto(request.getMonto());
+        pago.setMoneda(request.getMoneda() != null ? request.getMoneda() : "COP");
+        pago.setDireccionEnvio(request.getDireccionEnvio());
+        pago.setUsuarioId(request.getUsuarioId());
         pago.setFecha(LocalDateTime.now());
+        pago.setEstado("PAGADO");
+
         pagoRepository.save(pago);
 
         // 3️⃣ Generar facturas por producto
         List<Map<String, Object>> detalleProductos = new ArrayList<>();
 
         for (ProductoCompra producto : request.getProductos()) {
+            InventarioEntity inventario = productosInventario.get(producto.getProductoId());
             FacturaEntity factura = new FacturaEntity();
+
             factura.setCliente(request.getCliente());
             factura.setDescripcionPedido("Compra de producto ID: " + producto.getProductoId());
             factura.setProductoId(producto.getProductoId());
             factura.setCantidad(producto.getCantidad());
+            factura.setProveedorId(inventario.getProveedorId());
 
             double precio = inventarioRepository.findById(producto.getProductoId())
                     .map(InventarioEntity::getPrecio)
