@@ -18,6 +18,9 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.taller7arqui.inventario.service.ProductoService;;;
+
+
 @Service
 public class PagoService {
 
@@ -25,17 +28,20 @@ public class PagoService {
     private final PagoRepository pagoRepository;
     private final FacturaRepository facturacionRepository;
     private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final ProductoService productoService;
 
     public PagoService(
             InventarioRepository inventarioRepository,
             PagoRepository pagoRepository,
             FacturaRepository facturacionRepository,
-            KafkaTemplate<String, Object> kafkaTemplate
+            KafkaTemplate<String, Object> kafkaTemplate,
+            ProductoService productoService
     ) {
         this.inventarioRepository = inventarioRepository;
         this.pagoRepository = pagoRepository;
         this.facturacionRepository = facturacionRepository;
         this.kafkaTemplate = kafkaTemplate;
+        this.productoService = productoService;
     }
 
     public List<PagoEntity> obtenerPagos() {
@@ -110,6 +116,7 @@ public class PagoService {
             Map<String, Object> item = new HashMap<>();
             item.put("productoId", producto.getProductoId());
             item.put("cantidad", producto.getCantidad());
+            item.put("nombreProducto", productoService.getProductoById(producto.getProductoId()));
             item.put("precioUnitario", precio);
             item.put("total", factura.getTotal());
             detalleProductos.add(item);

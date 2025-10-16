@@ -1,5 +1,6 @@
 # 🛍️ Taller 4 - Gestión de Productos (Docker + Spring Boot + PostgreSQL)
 
+
 Este proyecto implementa un **sistema de gestión de productos** con:
 - **Backend en Spring Boot** (API REST)
 - **Base de datos PostgreSQL** configurada en Docker
@@ -44,6 +45,43 @@ También verifique que los contenedores estén activos
 ```env
 docker ps
 ```
+
+### Pruebas proyecto
+Para hacer pruebas debe usar POSTMAN o THUNDERCLIENT (Extensión de VS Code). Y pasar los siguientes parámetros:
+
+1. El endpoint configurado para hacer los pagos es 
+[http://localhost:8080/api/pagos](http://localhost:8080/api/pagos).
+2. Para esto, debe usar el siguiente body formato JSON (Recuerde modificar el email).
+```env
+{
+  "cliente": "David Cuadros",
+  "email": "cuadrosdavid01@gmail.com",
+  "metodoPago": "Tarjeta de crédito",
+  "monto": 250000.0,
+  "moneda": "COP",
+  "usuarioId": 1,
+  "idTransaccion": "TXN-123456",
+  "direccionEnvio": "Carrera 10 #25-50",
+  "ciudadEnvio": "Bucaramanga",
+  "fechaPago": "2025-10-15T17:30:00",
+  "productos": [
+    {
+      "productoId": 1,
+      "proveedorId": 2,
+      "cantidad": 1,
+      "precioUnitario": 250000.0
+    },
+    {
+      "productoId": 2,
+      "proveedorId": 2,
+      "cantidad": 1,
+      "precioUnitario": 25000.0
+    }
+  ]
+}
+```
+3. Revise el correo diligenciado y allí encontrará la factura e información de la compra.
+
 ### Actualizaciones o cambios 
 En dado caso que tenga que actualizar o cambiar algunas partes del código, tendrá que volver a desplegar con lo siguientes comandos 
 1. Detener contenedores y eliminar volúmenes para evitar caché
@@ -62,7 +100,7 @@ En caso de que sea un cambio solo del frontend, reconstruya la imagen con los si
 docker-compose down
 
 ```
-2. Reconstruye la imagen Docker solo del servicio "frontend".
+2. Reconstruye la imagen Docker solo del servicio "frontend". 
 ```bash
 docker-compose build frontend
 ```

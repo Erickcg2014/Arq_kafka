@@ -25,6 +25,8 @@ public class ProductoService implements IService {
     public Optional<Producto> getProductoById(Long id) {
         return productoRepository.findById(id);
     }
+
+    
     
     @Override
     public Producto saveProducto(Producto producto) {

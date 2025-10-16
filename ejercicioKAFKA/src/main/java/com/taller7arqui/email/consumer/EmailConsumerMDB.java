@@ -111,39 +111,39 @@ public class EmailConsumerMDB {
     }
     
     private String getContenidoHTML(String cliente, String fechaActual, int cantidadProductos, String moneda, String totalFormato, String listaProductos) {
-        return """
-                    <div class="content">
-                        <div class="greeting">
-                            Hola <strong>"" + cliente + ""</strong>,
-                        </div>
-                        <p>Nos complace confirmar que tu compra ha sido procesada exitosamente. A continuación encontrarás los detalles de tu pedido.</p>
-                        <div class="section">
-                            <h3>Resumen de tu Pedido</h3>
-                            <div class="resumen-pago">
-                                <p><strong>Fecha:</strong> "" + fechaActual + ""</p>
-                                <p><strong>Cantidad de productos:</strong> "" + cantidadProductos + ""</p>
-                                <div class="total">
-                                    Total: """ + moneda + " " + totalFormato + """
-                                </div>
-                            </div>
-                        </div>
-                        <div class="section">
-                            <h3>Productos Comprados</h3>
-                            """ + listaProductos + """
-                        </div>
-                        <div class="info-adicional">
-                            <strong>Próximos pasos:</strong>
-                            Tu pedido será preparado y empacado en las próximas 24 horas. Recibirás un correo de confirmación de envío con el número de seguimiento.
-                        </div>
-                        <div class="section">
-                            <p style="font-size: 14px; color: #666;">
-                                Si tienes alguna pregunta sobre tu pedido, no dudes en contactarnos respondiendo este correo o visitando nuestra página de soporte.
-                            </p>
+    return String.format("""
+            <div class="content">
+                <div class="greeting">
+                    Hola <strong>%s</strong>
+                </div>
+                <p>Nos complace confirmar que tu compra ha sido procesada exitosamente. A continuación encontrarás los detalles de tu pedido.</p>
+                <div class="section">
+                    <h3>Resumen de tu Pedido</h3>
+                    <div class="resumen-pago">
+                        <p><strong>Fecha:</strong> %s</p>
+                        <p><strong>Cantidad de productos:</strong> %d</p>
+                        <div class="total">
+                            Total: %s %s
                         </div>
                     </div>
-            """;
-    }
-    
+                </div>
+                <div class="section">
+                    <h3>Productos Comprados</h3>
+                    %s
+                </div>
+                <div class="info-adicional">
+                    <strong>Próximos pasos:</strong>
+                    Tu pedido será preparado y empacado en las próximas 24 horas. Recibirás un correo de confirmación de envío con el número de seguimiento.
+                </div>
+                <div class="section">
+                    <p style="font-size: 14px; color: #666;">
+                        Si tienes alguna pregunta sobre tu pedido, no dudes en contactarnos respondiendo este correo o visitando nuestra página de soporte.
+                    </p>
+                </div>
+            </div>
+            """, cliente, fechaActual, cantidadProductos, moneda, totalFormato, listaProductos);
+}
+
     private String getCierreHTML() {
         return """
                     <div class="footer">
@@ -171,13 +171,14 @@ public class EmailConsumerMDB {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> producto = (Map<String, Object>) productoObj;
                 
-                String nombreProducto = obtenerValor(producto, "nombreProducto", "nombreProducto", "nombre", "Producto");
+                Object nombreProductoObj = producto.get("tituloProductos");//obtenerValor(producto, "nombreProducto", "nombreProducto", "nombre", "Producto");
                 Object cantidadObj = producto.get("cantidad");
                 Object precioObj = producto.get("precioUnitario");
                 Object idObj = producto.get("productoId");
                 
                 int cantidad = convertirAInt(cantidadObj, 0);
                 double precio = convertirADouble(precioObj, 0.0);
+                String nombreProducto = convertirAString(nombreProductoObj, "Producto");
                 
                 productosHTML.append("<div class=\"producto\">")
                            .append("<div class=\"producto-nombre\">").append(nombreProducto).append("</div>")
@@ -231,4 +232,21 @@ public class EmailConsumerMDB {
         }
         return defecto;
     }
+    private String convertirAString(Object valor, String defecto) {
+    if (valor == null) {
+        return defecto;
+    } else if (valor instanceof String) {
+        return (String) valor;
+    } else if (valor instanceof Number || valor instanceof Boolean || valor instanceof Character) {
+        return valor.toString();
+    } else {
+        try {
+            return valor.toString();
+        } catch (Exception e) {
+            logger.warn("No se pudo convertir a String: {}", valor, e);
+            return defecto;
+        }
+    }
+}
+
 }

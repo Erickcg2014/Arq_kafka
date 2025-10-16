@@ -7,4 +7,5 @@ import com.taller7arqui.inventario.entity.InventarioEntity;
 @Repository
 public interface InventarioRepository extends JpaRepository<InventarioEntity, Long> {
     boolean existsByIdAndCantidadGreaterThanEqual(Long id, int cantidad);
+    
 }
